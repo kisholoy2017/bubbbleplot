@@ -52,14 +52,13 @@ def create_bubble_chart(df, COL_X, COL_Y, COL_POAS, COL_LABEL, COL_ABS_SPEND, cu
     
     sizeref = 2.0 * df[COL_ABS_SPEND].max() / (MAX_BUBBLE_PX ** 2)
     
-    cmin, cmax = 1.0, 3.0
-    poas_clipped = df[COL_POAS].clip(lower=cmin, upper=cmax)
+    poas_clipped = df[COL_POAS].clip(lower=1.0, upper=3.0)
     
     colorscale = [
-        (0.00, "#d73027"),
-        (0.10, "#ffd34d"),
-        (0.50, "#fff176"),
-        (1.00, "#1a9850")
+        [0.0, "#d73027"],
+        [0.1, "#ffd34d"],
+        [0.5, "#fff176"],
+        [1.0, "#1a9850"]
     ]
     
     fig = go.Figure()
@@ -81,21 +80,16 @@ def create_bubble_chart(df, COL_X, COL_Y, COL_POAS, COL_LABEL, COL_ABS_SPEND, cu
                 opacity=0.8,
                 color=poas_clipped,
                 colorscale=colorscale,
-                cmin=cmin,
-                cmax=cmax,
-                showscale=True,
-                colorbar=dict(
-                    title="POAS",
-                    len=0.35,
-                    thickness=18
-                )
+                cmin=1.0,
+                cmax=3.0
             ),
+            customdata=np.column_stack((df[COL_POAS], df[COL_ABS_SPEND])),
             hovertemplate=(
                 "<b>%{text}</b><br>"
-                + f"{COL_X}: " + "%{x:.2f}%<br>"
-                + f"{COL_Y}: " + "%{y:.2f}%<br>"
-                + f"{COL_POAS}: " + "%{marker.color:.2f}<br>"
-                + f"{COL_ABS_SPEND}: " + currency_symbol + "%{marker.size:,.0f}<extra></extra>"
+                + f"{COL_X}: %{{x:.2f}}%<br>"
+                + f"{COL_Y}: %{{y:.2f}}%<br>"
+                + "POAS: %{customdata[0]:.2f}<br>"
+                + f"{COL_ABS_SPEND}: {currency_symbol}%{{customdata[1]:,.0f}}<extra></extra>"
             )
         )
     )
