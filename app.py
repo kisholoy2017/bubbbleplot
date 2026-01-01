@@ -84,11 +84,14 @@ def create_bubble_chart(df, COL_X, COL_Y, COL_POAS, COL_LABEL, COL_ABS_SPEND, cu
                 cmin=cmin,
                 cmax=cmax,
                 colorbar=dict(
-                    title="POAS",
-                    titlefont=dict(size=16),
+                    title=dict(text="POAS", font=dict(size=16)),
                     tickfont=dict(size=14),
-                    x=0.02, y=0.98, xanchor="left", yanchor="top",
-                    len=0.35, thickness=18,
+                    x=0.02, 
+                    y=0.98, 
+                    xanchor="left", 
+                    yanchor="top",
+                    len=0.35, 
+                    thickness=18,
                     bgcolor="rgba(255,255,255,0.8)",
                     outlinewidth=0
                 )
